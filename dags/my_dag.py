@@ -4,6 +4,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
 from random import randint
 from datetime import datetime
+import pendulum
 
 def _choose_best_model(ti):
     accuracies = ti.xcom_pull(task_ids=[
