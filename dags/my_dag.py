@@ -28,12 +28,12 @@ with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024, 10, 29, tz="CET"), 
         )
 
        training_model_B = PythonOperator(
-           task_id="training_model_A", 
+           task_id="training_model_B", 
            python_callable=_training_model
         )
 
        training_model_C = PythonOperator(
-           task_id="training_model_A", 
+           task_id="training_model_C", 
            python_callable=_training_model
         )
 
