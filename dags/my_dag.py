@@ -18,7 +18,7 @@ def _choose_best_model(ti):
 def _training_model():
     return randint(1,10)
 
-with DAG("my_dag", start_date=datetime(2024,10,28), schedule_interval="@daily", catchup=False) as dag 
+with DAG("my_dag", start_date=datetime(2024,10,28), schedule=timedelta(days=1), catchup=False) as dag 
 
        training_model_A = PythonOperator(
            task_id="training_model_A", 
