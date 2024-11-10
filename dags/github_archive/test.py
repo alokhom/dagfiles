@@ -70,7 +70,7 @@ with DAG(dag_id="yajl_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), 
 
        # install python packages and build them
        pypacks = BashOperator(
-           task_id="install yajl",
+           task_id="install_yajl",
            bash_command="git clone git://github.com/lloyd/yajl && cd yajl && ./configure && make install"
        )
     
