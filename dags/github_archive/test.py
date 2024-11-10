@@ -84,6 +84,6 @@ with DAG(dag_id="yajl_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), 
        getfiles_mar = BashOperator(task_id="getfiles_mar",bash_command="wget https://data.gharchive.org/2024-03-{01..31}-{0..23}.json.gz | gzip -d > 2024-3.json")
        
        for i in range(1, 4):
-           importall = PythonOperator(task_id=f"{i}_process",python_callable=check_process,op_kwargs={"file_name": 2024-f"{i}".json})
+           importall = PythonOperator(task_id=f"{i}_process",python_callable=check_process,op_kwargs={"file_name": f"2024-{i}.json"})
 
        [pypacks,getfiles_jan,getfiles_feb,getfiles_mar] >> importall
