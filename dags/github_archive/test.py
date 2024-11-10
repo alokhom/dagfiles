@@ -65,7 +65,7 @@ def _import_process(_file):
         raise SystemExit(main(sys.argv[1:]))
 
 
-with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
+with DAG(dag_id="yajl_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
 
        # install python packages and build them
        pypacks = BashOperator(
