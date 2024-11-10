@@ -16,7 +16,7 @@ def _import_process(_file):
 
     BASEPATH = os.path.dirname(os.path.realpath(__file__))
     sys.path = [BASEPATH, '%s/..' %BASEPATH] + sys.path
-    from yajl import *
+    from yajl import YajlContentHandler, YajlParser, 
 
     # Sample callbacks, which output some debug info
     # these are examples to show off the yajl parser
