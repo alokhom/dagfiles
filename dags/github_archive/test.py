@@ -67,6 +67,12 @@ def _import_process(_file):
 
 with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
 
+       # install python packages and build them
+       pypacks = BashOperator(
+           task_id="install yajl",
+           bash_command="git clone git://github.com/lloyd/yajl && ./configure && make install"
+       )
+    
        # january
        getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="wget https://data.gharchive.org/2024-01-{01..31}-{0..23}.json.gz | gzip -d > 2024-1.json")
 
@@ -79,4 +85,4 @@ with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), sc
        for i in range(1, 4):
            importall = PythonOperator(task_id="import_process",python_callable=_import_process,op_kwargs={"_file": 2024-i.json})
 
-       [getfiles_jan,getfiles_feb,getfiles_mar] >> importall
+       [pypacks,getfiles_jan,getfiles_feb,getfiles_mar] >> importall
