@@ -65,7 +65,7 @@ def _import_process(_file):
         raise SystemExit(main(sys.argv[1:]))
 
 
-with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o9,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
+with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
 
        # january
        getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="wget https://data.gharchive.org/2024-01-{01..31}-{0..23}.json.gz | gzip -d > 2024-1.json")
