@@ -20,7 +20,7 @@ def _choose_best_model(ti):
 def _training_model():
     return randint(1,10)
 
-with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,07,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
+with DAG(dag_id="my_dag", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
 
        training_model_A = PythonOperator(
            task_id="training_model_A", 
