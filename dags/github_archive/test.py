@@ -71,6 +71,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        # install python packages and build them
        pypacks = BashOperator(
            task_id="install_yajl",
+           executor="LocalExecutor",
            bash_command="apt-get install -y libyajl-dev yajl-tools"
        )
     
