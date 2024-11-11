@@ -75,15 +75,15 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        )
     
        # january
-       getfiles_jan = BashOperator(task_id="getfiles_jan",executor="LocalExecutor",bash_command="wget https://data.gharchive.org/2024-01-01-{0..23}.json.gz | gzip -d > 2024-1.json")
+       getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="wget https://data.gharchive.org/2024-01-01-{0..23}.json.gz | gzip -d > 2024-1.json")
        importall_jan = PythonOperator(task_id="jan_process",python_callable=check_process,op_kwargs={"file_name": "2024-1.json"})
 
        # feb
-       getfiles_feb = BashOperator(task_id="getfiles_feb",executor="LocalExecutor",bash_command="wget https://data.gharchive.org/2024-02-01-{0..23}.json.gz | gzip -d > 2024-2.json")
+       getfiles_feb = BashOperator(task_id="getfiles_feb",bash_command="wget https://data.gharchive.org/2024-02-01-{0..23}.json.gz | gzip -d > 2024-2.json")
        importall_feb = PythonOperator(task_id="feb_process",python_callable=check_process,op_kwargs={"file_name": "2024-2.json"})
 
        # mar
-       getfiles_mar = BashOperator(task_id="getfiles_mar",executor="LocalExecutor",bash_command="wget https://data.gharchive.org/2024-03-01-{0..23}.json.gz | gzip -d > 2024-3.json")
+       getfiles_mar = BashOperator(task_id="getfiles_mar",bash_command="wget https://data.gharchive.org/2024-03-01-{0..23}.json.gz | gzip -d > 2024-3.json")
        importall_mar = PythonOperator(task_id="mar_process",python_callable=check_process,op_kwargs={"file_name": "2024-3.json"})
        
        #for i in range(1, 4):
