@@ -22,19 +22,18 @@ def my_func(*op_args):
     url=op_args[0]
     targetpath=op_args[1]
     file_name=op_args[2]
-    #try:
-    #  with urllib.request.urlopen(filename) as file:
-    #      with open(targetpath, "wb") as new_file:
-    #          new_file.write(file.read())
-    #    # return op_args[0]
-    #except Exception as e:
-    #    log.error(e)
-    #    raise AirflowException(e)
-    outfile = os.path.join(targetpath, file_name)
-    response = requests.get(url, stream = True)
-    with open(outfile, 'wb') as f:
-      shutil.copyfileobj(response.content, f)
-    
+    try:
+       #  with urllib.request.urlopen(filename) as file:
+       #      with open(targetpath, "wb") as new_file:
+       #          new_file.write(file.read())
+       #    # return op_args[0]
+       outfile = os.path.join(targetpath, file_name)
+       response = requests.get(url, stream = True)
+       #with open(outfile, 'wb') as f:
+       #  shutil.copyfileobj(response.content, f)
+    except Exception as e:
+        log.error(e)
+        raise AirflowException(e)    
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
