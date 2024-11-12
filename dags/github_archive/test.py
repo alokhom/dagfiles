@@ -24,5 +24,5 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        #for i in range(1, 4):
        #    importall = PythonOperator(task_id=f"{i}_process",python_callable=check_process,op_kwargs={"file_name": f"2024-{i}.json"})
 
-       getfiles_jan >> importall_jan >> getfiles_feb
-       #importall_feb >> getfiles_mar >> importall_mar 
+       getfiles_jan >> getfiles_mar >> getfiles_feb
+       #importall_feb >> importall_jan >> importall_mar 
