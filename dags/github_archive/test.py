@@ -8,20 +8,32 @@ import pendulum
 import urllib.request
 from airflow.decorators import task
 
+path = '/tmp/folder'
+
+if os.path.isdir(path):
+    os.chdir(path)
+else:
+    os.mkdir(path)
+    os.chdir(path)
+
 #def download_file(uri, target_path):
 def download_file(*op_args):
     with urllib.request.urlopen(op_args[0]) as file:
         with open(op_args[1], "wt") as new_file:
-            new_file.write(file.read())
+           new_file.write(file.read())
 
 def my_func(*op_args):
     #print(op_args)
     filename=op_args[0]
     targetpath=op_args[1]
-    with urllib.request.urlopen(filename) as file:
-        with open(targetpath, "wt") as new_file:
-            new_file.write(file.read())
+    try:
+      with urllib.request.urlopen(filename) as file:
+          with open(targetpath, "wt") as new_file:
+              new_file.write(file.read())
         # return op_args[0]
+    except Exception as e:
+        log.error(e)
+        raise AirflowException(e)
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
