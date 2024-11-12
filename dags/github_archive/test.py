@@ -8,9 +8,10 @@ import pendulum
 import urllib.request
 from airflow.decorators import task
 
-def download_file(uri, target_path):
-    with urllib.request.urlopen(uri) as file:
-        with open(target_path, "wt") as new_file:
+#def download_file(uri, target_path):
+def download_file(*op_args):
+    with urllib.request.urlopen(op_args[0]) as file:
+        with open(op_args[1], "wt") as new_file:
             new_file.write(file.read())
 
 
@@ -18,7 +19,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
  
        # january | gzip -d > 2024-1.json
        #
-       getfiles_jan = PythonOperator(task_id="getfiles_jan",python_callable=download_file,op_args={"https://data.gharchive.org/2024-01-01-23.json.gz","/tmp/"})
+       getfiles_jan = PythonOperator(task_id="getfiles_jan",python_callable=download_file,op_args=['https://data.gharchive.org/2024-01-01-23.json.gz','/tmp'])
        getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="[[ -f /tmp/2024-01-01-23.json.gz ]] && echo 'File found!'")
        # importall_jan = PythonOperator(task_id="jan_process",python_callable=check_process,op_kwargs={"file_name": "2024-1.json"})
 
