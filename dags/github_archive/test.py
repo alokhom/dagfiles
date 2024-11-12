@@ -4,6 +4,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
 from random import randint
 from datetime import datetime
+import os
 import pendulum
 import urllib.request
 from airflow.decorators import task
