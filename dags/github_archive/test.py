@@ -10,7 +10,7 @@ import pendulum
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
        # january | gzip -d > 2024-1.json
-       getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="pip install wget && wget https://data.gharchive.org/2024-01-01-23.json.gz")
+       getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="pip3 install -U curl2 && curl2 -c 'curl https://data.gharchive.org/2024-01-01-23.json.gz'")
        # importall_jan = PythonOperator(task_id="jan_process",python_callable=check_process,op_kwargs={"file_name": "2024-1.json"})
 
        # feb | gzip -d > 2024-2.json
