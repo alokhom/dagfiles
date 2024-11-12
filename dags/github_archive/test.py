@@ -7,7 +7,7 @@ from datetime import datetime
 import pendulum
 
 
-def check_process(_file):
+def check_process(file_name):
     import os
     import sys
     #import io
