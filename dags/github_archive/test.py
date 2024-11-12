@@ -69,9 +69,10 @@ def check_process(_file):
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
 
        # install python packages and build them
+       #  && ./configure && make && sudo make install
        pypacks = BashOperator(
            task_id="install_yajl",
-           bash_command="git clone https://github.com/lloyd/yajl.git && cd yajl && ./configure && make && sudo make install"
+           bash_command="git clone https://github.com/lloyd/yajl.git && cd yajl"
        )
     
        # january
