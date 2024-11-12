@@ -5,42 +5,42 @@ from airflow.operators.bash import BashOperator
 from random import randint
 from datetime import datetime
 import os
+import requests
+import shutil
 import pendulum
 import urllib.request
 from airflow.decorators import task
 
-path = '/tmp/folder'
-
-if os.path.isdir(path):
-    os.chdir(path)
-else:
-    os.mkdir(path)
-    os.chdir(path)
-
 #def download_file(uri, target_path):
 def download_file(*op_args):
     with urllib.request.urlopen(op_args[0]) as file:
-        with open(op_args[1], "wt") as new_file:
+        with open(op_args[1], "wb") as new_file:
            new_file.write(file.read())
 
 def my_func(*op_args):
     #print(op_args)
-    filename=op_args[0]
+    url=op_args[0]
     targetpath=op_args[1]
-    try:
-      with urllib.request.urlopen(filename) as file:
-          with open(targetpath, "wt") as new_file:
-              new_file.write(file.read())
-        # return op_args[0]
-    except Exception as e:
-        log.error(e)
-        raise AirflowException(e)
+    file_name=op_args[2]
+    #try:
+    #  with urllib.request.urlopen(filename) as file:
+    #      with open(targetpath, "wb") as new_file:
+    #          new_file.write(file.read())
+    #    # return op_args[0]
+    #except Exception as e:
+    #    log.error(e)
+    #    raise AirflowException(e)
+    outfile = os.path.join(targetpath, file_name)
+    response = requests.get(url, stream = True)
+    with open(outfile, 'wb') as f:
+      shutil.copyfileobj(response.content, f)
+    
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
        # january | gzip -d > 2024-1.json
        #
-       getfiles_jan = PythonOperator(task_id="getfiles_jan", python_callable=my_func, op_args=['https://data.gharchive.org/2024-01-01-23.json.gz','/tmp'])
+       getfiles_jan = PythonOperator(task_id="getfiles_jan", python_callable=my_func, op_args=['https://data.gharchive.org/2024-01-01-23.json.gz','/tmp','2024-01-01-23.json.gz'])
        getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="[[ -f /tmp/2024-01-01-23.json.gz ]] && echo 'File found!'")
        # importall_jan = PythonOperator(task_id="jan_process",python_callable=check_process,op_kwargs={"file_name": "2024-1.json"})
 
