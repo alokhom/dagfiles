@@ -5,24 +5,34 @@ from airflow.operators.bash import BashOperator
 from random import randint
 from datetime import datetime
 import pendulum
+import urllib.request
+from airflow.decorators import task
+
+def download_file(uri, target_path):
+    with urllib.request.urlopen(uri) as file:
+        with open(target_path, "wt") as new_file:
+            new_file.write(file.read())
 
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
        # january | gzip -d > 2024-1.json
-       getfiles_jan = BashOperator(task_id="getfiles_jan",bash_command="pip3 install -U curl2 && curl2 -c 'curl https://data.gharchive.org/2024-01-01-23.json.gz'")
+       #
+       getfiles_jan = PythonOperator(task_id="getfiles_jan",python_callable=download_file,op_args={"https://data.gharchive.org/2024-01-01-23.json.gz","/tmp"})
+       getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="if [ -f /tmp/2024-01-01-23.json.gz ]; then echo "File found!"; fi")
        # importall_jan = PythonOperator(task_id="jan_process",python_callable=check_process,op_kwargs={"file_name": "2024-1.json"})
 
        # feb | gzip -d > 2024-2.json
-       getfiles_feb = BashOperator(task_id="getfiles_feb",bash_command="pip install wget && wget https://data.gharchive.org/2024-02-01-23.json.gz")
+       #getfiles_feb = BashOperator(task_id="getfiles_feb",bash_command="pip install wget && wget https://data.gharchive.org/2024-02-01-23.json.gz")
        # importall_feb = PythonOperator(task_id="feb_process",python_callable=check_process,op_kwargs={"file_name": "2024-2.json"})
 
        # mar | gzip -d > 2024-3.json
-       getfiles_mar = BashOperator(task_id="getfiles_mar",bash_command="pip install wget && wget https://data.gharchive.org/2024-03-01-23.json.gz")
+       #getfiles_mar = BashOperator(task_id="getfiles_mar",bash_command="pip install wget && wget https://data.gharchive.org/2024-03-01-23.json.gz")
        # importall_mar = PythonOperator(task_id="mar_process",python_callable=check_process,op_kwargs={"file_name": "2024-3.json"})
        
        #for i in range(1, 4):
        #    importall = PythonOperator(task_id=f"{i}_process",python_callable=check_process,op_kwargs={"file_name": f"2024-{i}.json"})
 
-       getfiles_jan >> getfiles_feb >> getfiles_mar
+       getfiles_jan >> getfiles_jancheck 
+       # >> getfiles_feb >> getfiles_mar
        #importall_feb >> importall_jan >> importall_mar 
