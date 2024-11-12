@@ -29,8 +29,8 @@ def my_func(*op_args):
        #    # return op_args[0]
        outfile = os.path.join(targetpath, file_name)
        response = requests.get(url, stream = True)
-       #with open(outfile, 'wb') as f:
-       #  shutil.copyfileobj(response.content, f)
+       with open(outfile, 'wb') as f:
+         shutil.copyfileobj(response.content, f)
     except Exception as e:
         log.error(e)
         raise AirflowException(e)    
