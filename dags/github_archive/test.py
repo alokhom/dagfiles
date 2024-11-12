@@ -71,7 +71,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        # install python packages and build them
        pypacks = BashOperator(
            task_id="install_yajl",
-           bash_command="pip install yajl-py"
+           bash_command="git clone https://github.com/lloyd/yajl.git && cd yajl && ./configure && make && sudo make install"
        )
     
        # january
@@ -89,4 +89,4 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        #for i in range(1, 4):
        #    importall = PythonOperator(task_id=f"{i}_process",python_callable=check_process,op_kwargs={"file_name": f"2024-{i}.json"})
 
-       pypacks >> [getfiles_jan,importall_jan,getfiles_feb,importall_feb,getfiles_mar,importall_mar] 
+       pypacks >> getfiles_jan >> importall_jan >> getfiles_feb >> importall_feb >> getfiles_mar >> importall_mar 
