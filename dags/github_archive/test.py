@@ -15,8 +15,13 @@ def download_file(*op_args):
             new_file.write(file.read())
 
 def my_func(*op_args):
-        print(op_args)
-        return op_args[0]
+    #print(op_args)
+    filename=op_args[0]
+    targetpath=op_args[1]
+    with urllib.request.urlopen(filename) as file:
+        with open(targetpath, "wt") as new_file:
+            new_file.write(file.read())
+        # return op_args[0]
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
