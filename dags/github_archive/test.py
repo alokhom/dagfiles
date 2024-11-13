@@ -33,11 +33,11 @@ def execdb(*op_args):
     connection = psycopg2.connect(database="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
     cursor = connection.cursor()
     
-    # sql_context ="""
-    # \c archive;
-    # """
+    sql_context ="""
+    \l;
+    """
     
-    cursor.execute(sqlstatement)
+    cursor.execute(sql_context)
     
     # Fetch all rows from database
     record = cursor.fetchall()
