@@ -69,7 +69,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
 
 # db
 #execdb = PythonOperator(task_id="execdb", python_callable=execdb, op_args=['\c archive'])
-with DAG(dag_id = "postgresop_demo", description='use case of operator in airflow', start_date = airflow.utils.dates.days_ago(1), schedule="@once",catchup=False) as dag:
+with DAG(dag_id = "postgresop_demo", description='use case of sqloperator in airflow', start_date=datetime.datetime(2020, 2, 2), schedule="@once", catchup=False) as dag:
        create_pet_table = SQLExecuteQueryOperator(
            task_id="create_pet_table",
            conn_id="postgres_conn",
