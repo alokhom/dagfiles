@@ -36,7 +36,11 @@ def execdb(*op_args):
       sql_context ="""
       \l;
       """
-      cursor.execute(sql_context)
+
+      results = cursor.execute(sql_context)
+      cursor.close()
+      connection.close()
+      return results
     except psycopg2.OperationalError:
       pass
     
