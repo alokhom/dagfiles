@@ -3,8 +3,11 @@ from airflow.decorators import task
 from airflow.exceptions import AirflowException
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.operators.postgres_operator import PostgresOperator 
+from airflow.utils.dates import days_ago
 from random import randint
 from datetime import datetime
+from datetime import timedelta
 import os
 import requests
 import shutil
