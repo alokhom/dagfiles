@@ -29,8 +29,8 @@ def my_func(*op_args):
         raise AirflowException(e)    
 
 def execdb(*op_args):
-    sqlstatement=op_args[0]
-    connection = psycopg2.connect(database="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
+    #sqlstatement=op_args[0]
+    connection = psycopg2.connect(dbname="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
     cursor = connection.cursor()
     
     sql_context ="""
@@ -40,9 +40,9 @@ def execdb(*op_args):
     cursor.execute(sql_context)
     
     # Fetch all rows from database
-    record = cursor.fetchall()
+    # record = cursor.fetchall()
     
-    print("Data from Database:- ", record)
+    # print("Data from Database:- ", record)
 
 
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
