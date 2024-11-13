@@ -15,12 +15,6 @@ from airflow.decorators import task
 
 path = '/tmp'
 
-if os.path.isdir(path):
-    os.chdir(path)
-else:
-    os.mkdir(path)
-    os.chdir(path)
-
 #def download_file(uri, target_path):
 def download_file(*op_args):
     with urllib.request.urlopen(op_args[0]) as file:
