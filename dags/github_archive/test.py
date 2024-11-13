@@ -31,17 +31,17 @@ def my_func(*op_args):
 def execdb(*op_args):
     #sqlstatement=op_args[0]
     connection = psycopg2.connect(dbname="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
-    cursor = connection.cursor()
-    
-    sql_context ="""
-    \l;
-    """
-    
-    cursor.execute(sql_context)
+    try:
+      cursor = connection.cursor()
+      sql_context ="""
+      \l;
+      """
+      cursor.execute(sql_context)
+    except psycopg2.OperationalError:
+      pass
     
     # Fetch all rows from database
     # record = cursor.fetchall()
-    
     # print("Data from Database:- ", record)
 
 
