@@ -11,7 +11,7 @@ import shutil
 import pendulum
 import urllib.request
 from airflow.decorators import task
-
+import psycopg2
 
 path = '/tmp'
 
@@ -28,6 +28,23 @@ def my_func(*op_args):
         log.error(e)
         raise AirflowException(e)    
 
+def execdb(*op_args):
+    sqlstatement=op_args[0]
+    connection = psycopg2.connect(database="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
+    cursor = connection.cursor()
+    
+    # sql_context ="""
+    # \c archive;
+    # """
+    
+    cursor.execute(sqlstatement)
+    
+    # Fetch all rows from database
+    record = cursor.fetchall()
+    
+    print("Data from Database:- ", record)
+
+
 with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET"), schedule_interval='@hourly', catchup=False) as dag:
  
        # january 
@@ -39,6 +56,10 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
 
        # mar
        getfiles_mar = PythonOperator(task_id="getfiles_mar", python_callable=my_func, op_args=['https://data.gharchive.org/2024-03-01-23.json.gz'])
-       
-       getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar
+
+       # db
+       execdb = PythonOperator(task_id="execdb", python_callable=execdb, op_args=['\c archive'])
+
+    
+       getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar >> execdb
        #importall_feb >> importall_jan >> importall_mar 
