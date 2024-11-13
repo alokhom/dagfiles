@@ -30,7 +30,7 @@ def my_func(*op_args):
 
 def execdb(*op_args):
     #sqlstatement=op_args[0]
-    connection = psycopg2.connect(dbname="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
+    connection = psycopg2.connect(database="archive", user='pgbouncer', password='{{ var.value.pgpass }}', host="hippo-pgbouncer.etl-db.svc", port=5432)
     try:
       cursor = connection.cursor()
       sql_context ="""
