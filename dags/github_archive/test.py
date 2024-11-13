@@ -7,7 +7,6 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.utils.dates import days_ago
 from random import randint
 from datetime import datetime
-from datetime import timedelta
 import os
 import requests
 import shutil
