@@ -6,7 +6,7 @@ from airflow.operators.bash import BashOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.utils.dates import days_ago
 from random import randint
-from datetime import datetime
+import datetime as dt
 import os
 import requests
 import shutil
@@ -68,7 +68,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
 
 # db
 #execdb = PythonOperator(task_id="execdb", python_callable=execdb, op_args=['\c archive'])
-with DAG(dag_id = "postgresop_demo", description='use case of sqloperator in airflow', start_date=datetime.datetime(2020, 2, 2), schedule="@once", catchup=False) as dag:
+with DAG(dag_id = "postgresop_demo", start_date=dt.datetime(2022, 01, 01), schedule="@once", catchup=False) as dag:
        create_pet_table = SQLExecuteQueryOperator(
            task_id="create_pet_table",
            conn_id="postgres_conn",
