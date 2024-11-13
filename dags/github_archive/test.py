@@ -68,7 +68,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
 
 # db
 #execdb = PythonOperator(task_id="execdb", python_callable=execdb, op_args=['\c archive'])
-with DAG(dag_id = "postgresop_demo", schedule="@once", start_date=dt.datetime(2021, 12, 01),  catchup=False) as dag:
+with DAG(dag_id="postgresop_demo", schedule="@once", start_date=dt.datetime(2021, 12, 01), catchup=False) as dag:
        create_pet_table = SQLExecuteQueryOperator(
            task_id="create_pet_table",
            conn_id="postgres_conn",
