@@ -12,8 +12,6 @@ import pendulum
 
 path = '/tmp'
 
-# Allow a maximum of concurrent 10 tasks across a max of 3 active DAG runs
-@dag("getfiles_jan", concurrency=10, max_active_runs=3)
 def my_func(*op_args):
     #print(op_args)
     url=op_args[0]
