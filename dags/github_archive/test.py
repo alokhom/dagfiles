@@ -36,14 +36,12 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
 
        # mar
        getfiles_mar = PythonOperator(task_id="getfiles_mar", python_callable=my_func, op_args=['https://data.gharchive.org/2024-03-01-23.json.gz'])
-
-       getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar
-
+   
        create_table = PostgresOperator(
            task_id="create_table",
            conn_id="postgres_conn",
            sql="""
-               CREATE TABLE cars (
+               CREATE TABLE IF NOT EXISTS cars (
                brand VARCHAR(255),
                model VARCHAR(255),
                year INT
@@ -51,4 +49,4 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
                """,
        )
        
-       create_table 
+        getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar >> create_table 
