@@ -49,4 +49,4 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
                """,
        )
        
-        getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar >> create_table 
+       getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar >> create_table
