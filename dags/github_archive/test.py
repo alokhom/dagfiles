@@ -3,7 +3,7 @@ from airflow.decorators import task
 from airflow.exceptions import AirflowException
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
-from airflow.operators.postgres_operator import PostgresOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 import datetime as dt
 import os
 import requests
@@ -37,8 +37,9 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        # mar
        getfiles_mar = PythonOperator(task_id="getfiles_mar", python_callable=my_func, op_args=['https://data.gharchive.org/2024-03-01-23.json.gz'])
    
-       create_table = PostgresOperator(
+       create_table = SQLExecuteQueryOperator(
            task_id="create_table",
+           autocommit=True,
            conn_id="postgres_conn",
            sql="""
                CREATE TABLE IF NOT EXISTS cars (
