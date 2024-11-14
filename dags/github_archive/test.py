@@ -42,7 +42,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
            autocommit=True,
            conn_id="postgres_conn",
            sql="""
-               CREATE TABLE IF NOT EXISTS cars (
+               CREATE TABLE IF NOT EXISTS cars(
                brand VARCHAR(255),
                model VARCHAR(255),
                year INT
