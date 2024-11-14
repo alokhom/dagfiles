@@ -104,6 +104,6 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
        #     hook_params={"options": "-c statement_timeout=3000ms"},
        #  )
        
-       create_pet_table 
+       create_table 
        #>> populate_pet_table >> get_all_pets >> get_birth_date
 
