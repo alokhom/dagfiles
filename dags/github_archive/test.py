@@ -41,7 +41,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
            task_id="create_table",
            autocommit=True,
            conn_id="postgres_conn",
-           sql=f"CREATE TABLE IF NOT EXISTS cars( brand VARCHAR(255), model VARCHAR(255), year INT );",
+           sql=f"CREATE TEMP TABLE if not exists target(data jsonb);copy target from '/tmp/2024-01-01-23.json';",
            split_statements=True,
            return_last=False,
        )
