@@ -29,21 +29,22 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
  
        # january 
        getfiles_jan = PythonOperator(task_id="getfiles_jan", python_callable=my_func, op_args=['https://data.gharchive.org/2024-01-01-23.json.gz'])
-       getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="gunzip -c /tmp/2024-01-01-23.json.gz >/tmp/2024-01-01-23.json")
-
+       getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="gunzip -c 2024-01-01-23.json.gz > /tmp/2024-01-01-23.json && ls -ltr /tmp/2024-01-01-23.json")
+       create_table = SQLExecuteQueryOperator(
+           task_id="create_table",
+           autocommit=True,
+           conn_id="postgres_conn",
+           sql=f"CREATE TABLE IF NOT EXISTS tmp (c text);\copy tmp from '/tmp/2024-01-01-23.json'",
+           split_statements=True,
+           return_last=False,
+       )
+    
        # feb
        getfiles_feb = PythonOperator(task_id="getfiles_feb", python_callable=my_func, op_args=['https://data.gharchive.org/2024-02-01-23.json.gz'])
 
        # mar
        getfiles_mar = PythonOperator(task_id="getfiles_mar", python_callable=my_func, op_args=['https://data.gharchive.org/2024-03-01-23.json.gz'])
    
-       create_table = SQLExecuteQueryOperator(
-           task_id="create_table",
-           autocommit=True,
-           conn_id="postgres_conn",
-           sql=f"CREATE TEMP TABLE if not exists target(data jsonb);copy target from '/tmp/2024-01-01-23.json';",
-           split_statements=True,
-           return_last=False,
-       )
+
        
-       getfiles_jan >> getfiles_jancheck >> getfiles_feb >> getfiles_mar >> create_table
+       getfiles_jan >> getfiles_jancheck >> create_table >> getfiles_feb >> getfiles_mar 
