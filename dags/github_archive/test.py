@@ -29,7 +29,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
  
        # january 
        getfiles_jan = PythonOperator(task_id="getfiles_jan", python_callable=my_func, op_args=['https://data.gharchive.org/2024-01-01-23.json.gz'])
-       getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="ls -ltr /tmp/2024-01-01-23.json.gz && zcat /tmp/2024-01-01-23.json.gz > /tmp/2024-01-01-23.json && echo {"name": "alok"} > /tmp/test.json && sleep 10)
+       getfiles_jancheck = BashOperator(task_id="getfiles_jancheck",bash_command="ls -ltr /tmp/2024-01-01-23.json.gz && zcat /tmp/2024-01-01-23.json.gz > /tmp/2024-01-01-23.json && echo {'name': 'alok'} > /tmp/test.json && sleep 10")
        create_table = SQLExecuteQueryOperator(
            task_id="create_table",
            autocommit=True,
