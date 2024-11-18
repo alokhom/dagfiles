@@ -34,12 +34,12 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
            task_id="create_table",
            autocommit=True,
            conn_id="postgres_conn",
-           sql=f"create schema json_demo;create unlogged table t(t text);\copy t from /tmp/2024-01-01-23.json",
+           sql=f"create schema json_demo;create unlogged table t(t text);",
            split_statements=True,
            return_last=False,
        )
     
-       # feb
+       # feb \copy t from /tmp/2024-01-01-23.json
        getfiles_feb = PythonOperator(task_id="getfiles_feb", python_callable=my_func, op_args=['https://data.gharchive.org/2024-02-01-23.json.gz'])
 
        # mar
