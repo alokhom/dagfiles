@@ -34,7 +34,7 @@ with DAG(dag_id="yajl_dag_new", start_date=pendulum.datetime(2024,11,0o7,tz="CET
            task_id="create_table",
            autocommit=True,
            conn_id="postgres_conn",
-           sql=f"create unlogged table t(t text);\copy t from '/tmp/2024-01-01-23.json'",
+           sql=f"create unlogged table t(t text);\copy t from '/tmp/2024-01-01-23.json';",
            split_statements=True,
            return_last=False,
        )
